@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <title>QR code demo</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script type="text/javascript" src="qr-code-generator.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+</head>
+<body>
+  <!-- Parent div container for the page -->
+  <!-- You can read more about the grid system I used here:
+        https://getbootstrap.com/docs/4.0/layout/grid/ -->
+  <div class="container-fluid m-2 p-2">
+    <!-- NOTES ROW-->  
+    <div class="row m-2 p-2">
+      <div class="col-lg shadow p-2 m-2">
+        <h3>Important Notes:</h3>
+        <p>
+          Because the QR code script relies heavily on a variety of classes, it is important that the 
+          script be declared before any code that uses it. <br> Therefore, if the QR code script is 
+          in-lined in the HTML doc, it should be done before the rest of the document. If instead it 
+          is placed in a CDN, it should be declared in the head of the document, just like the 
+          declaration of the src for jQuery (as shown in this document).
+        </p>
+        <p>
+            Alternatively, if the instanciation of the QR code is nested within a jQuery 
+            <code>.ready()</code> function, this issue is bypassed and it allows for cleaner code.
+        </p>
+      </div>
+    </div>
+
+    <!-- DEMO ROW OF INPUT FOLLOWED BY THE RESULTING QR -->
+    <div class="row m-2 p-2">
+      
+      <!-- INPUT BOX COLUMN -->
+      <div class="col-sm shadow p-2 m-2 form-group">
+        <label for="transactionRef">Type here to see QR Code update as you type.</label>
+        <input id="transactionRef" type="text" class="form-control" value="%%ATT:TransactionRef%%" placeholder="%%ATT:TransactionRef%%" />
+      </div>
+
+      <!-- QR CODE COLUMN -->
+      <div class="col-2 shadow p-2 m-2 text-center">
+        <div id="qrLandingZone" class="d-inline-flex"></div>
+      </div>
+
+    </div>
+
+    <div class="container-fluid m-2 p-2">
+      <!-- FINAL NOTES ROW-->  
+      <div class="row m-2 p-2">
+        <div class="col-lg shadow p-2 m-2">
+          <h3>Closing Notes:</h3>
+          <p>
+            To see how <kbd>qr-code-generator.js</kbd> is implemented, examine the javascript I've 
+            in-lined in the footer of this html file.
+          </p>
+        </div>
+      </div>
+
+  </div> <!-- end parent div container -->
+ 
+</body>
+
+<footer>
+  <script>"https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.3/umd/popper.min.js"</script>
+  <script>"https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/js/bootstrap.min.js"</script>
+  <script>
+    "use strict"; // See "Why Strict Mode?" at https://www.w3schools.com/js/js_strict.asp
+
+    //Listen for input events on the input box
+    document.querySelector('#transactionRef').addEventListener('input',(event) => {genQR(event.target.value)})
+
+    //declared outside the document ready section so no runtime errors are thrown.
+    var transactionRefQR, qrParams, trRefSvg
+
+    //QR specific functions don't run until the page is ready in case the QR js is loaded last.
+    $(document).ready( ()=>{
+
+    // //Define size and error checking of qr code
+    //see Original_papnkukn_README.md for other options.
+    qrParams = {
+      content: $('#transactionRef').val(),
+      width: 100, height: 100, //
+      color: '#000000', //the dark color on the QR
+      background: '#ffffff', //the light color on the QR
+      ecl: 'H', //approximately 30% restoration, the highest level.
+      container: 'svg', //This option allows for definable width and height
+      join: true 
+      //force: true
+    }; 
+
+      //So a QR gets generated at runtime
+      genQR($('#transactionRef').val())
+    });
+
+
+    function genQR(textVal){
+      //Update the qrParams object with the new content value.
+      qrParams.content = textVal
+      $('#qrLandingZone').empty() //Clear the inner html of the qrLandingZone div.
+      transactionRefQR = null //set it as null for safety
+      transactionRefQR = new QRCode(qrParams) //generate a new QRCode object
+      //...and from it generate a new svg and display it in the qrLandingZone div.
+      $('#qrLandingZone').html(transactionRefQR.svg());
+    };
+  </script>
+</footer>
+
+</html>

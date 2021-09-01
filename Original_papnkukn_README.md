@@ -54,8 +54,8 @@ qrcode.save("sample.svg", function(error) {
 * **container** - wrapping element, default: `svg`, see below
 
 **Container options:**
-* **svg** - populate squares in a SVG document with `width` and `height` attriute, recommended for converting to raster images or PDF where QR Code is being static (exact size)
-* **svg-viewbox** - populate squares in a SVG document with `viewBox` attriute, **recommended** for responsive web pages
+* **svg** - populate squares in a SVG document with `width` and `height` attribute, recommended for converting to raster images or PDF where QR Code is being static (exact size)
+* **svg-viewbox** - populate squares in a SVG document with `viewBox` attribute, **recommended** for responsive web pages
 * **g** - put squares in `g` element, useful when you need to put multiple QR Codes in a single SVG document
 * **none** - no wrapper
 
