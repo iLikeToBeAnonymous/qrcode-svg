@@ -37,8 +37,9 @@
     <div class="row m-2 p-2">
       
       <!-- INPUT BOX COLUMN -->
-      <div class="col-sm shadow p-2 m-2">
-        <input id="transactionRef" type="text" class="form-control" value="PO-12345" placeholder="%%ATT:TransactionRef%%" />
+      <div class="col-sm shadow p-2 m-2 form-group">
+        <label for="transactionRef">Type here to see QR Code update as you type.</label>
+        <input id="transactionRef" type="text" class="form-control" value="%%ATT:TransactionRef%%" placeholder="%%ATT:TransactionRef%%" />
       </div>
 
       <!-- QR CODE COLUMN -->
@@ -47,6 +48,19 @@
       </div>
 
     </div>
+
+    <div class="container-fluid m-2 p-2">
+      <!-- FINAL NOTES ROW-->  
+      <div class="row m-2 p-2">
+        <div class="col-lg shadow p-2 m-2">
+          <h3>Closing Notes:</h3>
+          <p>
+            To see how <kbd>qr-code-generator.js</kbd> is implemented, examine the javascript I've 
+            in-lined in the footer of this html file.
+          </p>
+        </div>
+      </div>
+
   </div> <!-- end parent div container -->
  
 </body>
@@ -65,18 +79,18 @@
 
     //QR specific functions don't run until the page is ready in case the QR js is loaded last.
     $(document).ready( ()=>{
+
     // //Define size and error checking of qr code
+    //see Original_papnkukn_README.md for other options.
     qrParams = {
       content: $('#transactionRef').val(),
-      width: 100, height: 100, //these params need to be put on the viewBox like: viewBox="0 0 100px 100px"
-      color: '#000000',
-      background: '#ffffff', 
+      width: 100, height: 100, //
+      color: '#000000', //the dark color on the QR
+      background: '#ffffff', //the light color on the QR
       ecl: 'H', //approximately 30% restoration, the highest level.
-      //for the "container" param, val of "svg" will be according to the width and height params, but 
-      //"svg-viewbox" is responsive and will dynamically resize to the container regardless of the width and height params.
-      container: 'svg', 
-      join: true,
-      force: true
+      container: 'svg', //This option allows for definable width and height
+      join: true 
+      //force: true
     }; 
 
       //So a QR gets generated at runtime
